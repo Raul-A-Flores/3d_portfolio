@@ -6,10 +6,13 @@ import  Island  from '../models/Island'
 import Sky from '../models/Sky';
 import Bird from '../models/Bird';
 import Plane from '../models/Plane';
+import { useState } from 'react';
+import { is } from '@react-spring/shared';
 
 
 const Home = () => {
 
+  const [isRotating, setIsRotating] = useState(false)
   const adjustIslandForScreenSize = () =>{
     let screenScale = null;
     let screenPosition = [0,-6.5, -43]
@@ -26,12 +29,30 @@ const Home = () => {
   }
 
 
-   const [ islandScale, islandPosition, rotation ] = adjustIslandForScreenSize()
+  const adjustPlaneForSceenSize = () =>{
+    let screenScale = null;
+    let screenPosition = null
+
+    if (window.innerWidth < 768){
+      screenScale=[1.5,1.5,1.5]
+      screenPosition=[0,-1.5,0]
+    } else{
+      screenScale=[3,3,3]
+      screenPosition=[0,-4,-4]
+
+    }
+    return [screenScale, screenPosition, ]
+
+  }
+
+   const [ planeScale, planePosition,  ] = adjustPlaneForSceenSize()
+   const [ islandScale, islandPosition, rotation  ] = adjustIslandForScreenSize()
+
   return (
     <section className='w-full h-screen relative'>
 
       <Canvas 
-      className='w-full h-screen bg-transparent'
+      className= {`w-full h-screen bg-transparent ${isRotating ? 'cursor-grabbing' :'cursor-grab'}`}
       camera={{ near: 0.1 , far: 1000}}>
       <Suspense   fallback={<Loader />}>
         <directionalLight position={[1,1,1]} intensity={2} />
@@ -46,8 +67,16 @@ const Home = () => {
           position={islandPosition}
           scale={islandScale}
           rotation={rotation}
+          isRotating={isRotating}
+          setIsRotating={setIsRotating}
           />
-        <Plane />
+        <Plane 
+
+          isRotating={isRotating}
+          planeScale={planeScale}
+          planePosition={planePosition}
+          rotation={[0,20,0]}
+          />
 
       </Suspense>
       </Canvas>
