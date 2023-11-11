@@ -8,12 +8,14 @@ import Bird from '../models/Bird';
 import Plane from '../models/Plane';
 import { useState } from 'react';
 import { is } from '@react-spring/shared';
-
+import HomeInfo from '../components/HomeInfo';
 
 const Home = () => {
 
   const [currentStage, setCurrentStage] = useState(1)
   const [isRotating, setIsRotating] = useState(false)
+
+  console.log(currentStage)
   const adjustIslandForScreenSize = () =>{
     let screenScale = null;
     let screenPosition = [0,-6.5, -43]
@@ -51,6 +53,9 @@ const Home = () => {
 
   return (
     <section className='w-full h-screen relative'>
+      <div className='absolute top-28 left-0 right-0 z-10 flex items-center justify-center'>
+        {currentStage && <HomeInfo currentStage={currentStage} />}
+      </div>
 
       <Canvas 
       className= {`w-full h-screen bg-transparent ${isRotating ? 'cursor-grabbing' :'cursor-grab'}`}
