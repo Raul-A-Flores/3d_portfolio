@@ -12,4 +12,4 @@ const CTA = () => {
   )
 }
 
-export default CTA
+export default CTA;
